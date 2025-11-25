@@ -213,7 +213,7 @@ function render() {
   }
 
   count.textContent = selected.length;
-  addBtn.disabled = selected.length >= 3;
+  addBtn.disabled = selected.length >= 1;
 
   const emos = calcDominantEmotions(selected, 2);
   inferredEl.textContent = emos.length ? emos.join(", ") : "-";
@@ -247,7 +247,7 @@ async function logColorExperiment(emos, recommendResults) {
 
 // ---------- イベント ----------
 addBtn.addEventListener("click", () => {
-  if (selected.length >= 3) return;
+  if (selected.length >= 1) return;
   const hex = normalizeHex(colorInput.value);
   const rgb = hexToRgbArray(hex);
 
