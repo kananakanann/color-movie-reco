@@ -185,6 +185,26 @@ def create_app():
     def health():
         return {"status": "ok"}
 
+    # ---------- ログ確認用（安全な簡易ビュー） ----------
+    @app.get("/admin/logs")
+    def view_logs():
+        """
+        実験ログをブラウザで確認する簡易ビュー。
+        ※実験終了後は消すかパスワード保護推奨
+        """
+        if not os.path.exists(LOG_FILE):
+            return "ログファイルがまだありません。", 404
+
+        with open(LOG_FILE, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        # 最新が下、読みやすいように <pre>で囲む
+        html = "<h2>Color Experiment Logs</h2><pre>"
+        html += "".join(lines)
+        html += "</pre>"
+        return html
+
+
     return app
 
 # グローバルな app 変数を作る
