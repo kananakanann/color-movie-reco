@@ -1,0 +1,7 @@
+Flask
+requests
+Pillow
+transformers
+pandas
+numpy
+gunicorn

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>色から映画をおすすめ</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/color.css') }}">
+</head>
+<body>
+  <header class="wrap">
+    <h1>色から映画を探す</h1>
+    <!-- <p><a href="{{ url_for('index') }}">← 感情で探すに戻る</a></p> -->
+  </header>
+
+  <main class="wrap">
+    <p class="description">なりたい感情に合った色を選択してください。最大3色まで選べます。</p>
+    <section class="row">
+      <input id="color-input" type="color" value="#ff6b6b" aria-label="色を選択">
+      <button id="add-color-btn" class="btn">この色を追加</button>
+      <span class="hint">現在 <span id="count">0</span> / 3 色</span>
+    </section>
+
+    <section>
+      <h2>選択した色</h2>
+      <div id="chips" class="chips"></div>
+      <div id="preview" class="preview">（ここにグラデーションプレビュー）</div>
+      <!-- 追加: 推定感情の表示 -->
+      <div class="row" style="margin-top:8px;">
+        <div>推定感情: <strong id="inferred-emotion">-</strong></div>
+      </div>
+    </section>
+
+    
+    <section class="row">
+      <button id="clear-btn" class="btn btn-ghost">リセット</button>
+      <button id="recommend-btn" class="btn btn-primary" disabled>映画を検索</button>
+      <!--
+      <button id="to-emotion-btn" class="btn" disabled>（感情ベース）映画をレコメンド</button>
+    -->
+    </section>
+
+    <section>
+      <h2>結果</h2>
+      <div id="results" class="results"></div>
+      <div id="error" class="error"></div>
+    </section>
+  </main>
+
+  
+
+  <script src="{{ url_for('static', filename='js/colorPicker.js') }}"></script>
+</body>
+</html>

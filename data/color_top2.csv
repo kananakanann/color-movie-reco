@@ -1,0 +1,21 @@
+color_code,color_name,top_emotions,probs
+#ff0000,red,"['anger', 'fear']","[0.61, 0.189]"
+#ffff00,yellow,"['joy', 'surprise']","[0.662, 0.213]"
+#008000,green,"['joy', 'リラックス']","[0.434, 0.304]"
+#0000ff,blue,['sadness'],[0.78]
+#800080,purple,['fear'],[0.522]
+#ffc0cb,pink,['love'],[0.837]
+#000000,black,"['fear', 'anger']","[0.599, 0.233]"
+#ffffff,white,"['joy', 'fear']","[0.394, 0.244]"
+#a52a2a,brown,"['fear', 'anger']","[0.284, 0.209]"
+#dc143c,crimson,['love'],[0.544]
+#ffd700,gold,['joy'],[0.677]
+#808080,gray,"['fear', 'sadness']","[0.516, 0.304]"
+#adff2f,yellowgreen,"['joy', 'surprise']","[0.523, 0.279]"
+#fffff0,ivory,"['joy', 'love']","[0.446, 0.235]"
+#90ee90,lightgreen,"['joy', 'surprise']","[0.546, 0.167]"
+#ba55d3,mediumorchid,"['fear', 'sadness']","[0.406, 0.151]"
+#c71585,mediumviolet,['love'],[0.743]
+#000080,navy,"['sadness', 'fear']","[0.627, 0.198]"
+#ffa500,orange,"['joy', 'surprise']","[0.688, 0.211]"
+#87ceeb,skyblue,"['sadness', 'joy']","[0.535, 0.167]"

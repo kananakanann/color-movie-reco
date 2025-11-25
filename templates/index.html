@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>movie recommendation system</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    form { margin-bottom: 20px; }
+    .movie-card {
+      border: 1px solid #ccc; border-radius: 8px;
+      padding: 10px; margin-bottom: 12px;
+    }
+    .movie-title { font-weight: bold; font-size: 1.2em; }
+    .score-bar {
+      background: #eee; border-radius: 4px; height: 12px; width: 200px;
+      margin: 4px 0;
+    }
+    .score-bar-fill {
+      background: steelblue; height: 12px; border-radius: 4px;
+    }
+    .error { color: red; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>おすすめ映画</h1>
+
+  {% if error_msg %}
+    <div class="error">{{ error_msg }}</div>
+  {% endif %}
+
+  <form method="get" action="/">
+    <label>Emotion:
+      <select name="emotion">
+        <option value="">--select--</option>
+        {% for e in emotions %}
+          <option value="{{ e }}" {% if form.emotion==e %}selected{% endif %}>{{ e }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>TopK: <input type="number" name="topk" value="{{ form.topk }}"></label>
+    <label>Min Reviews: <input type="number" name="min_review_count" value="{{ form.min_review_count }}"></label>
+    <label>Year Min: <input type="number" name="year_min" value="{{ form.year_min or '' }}"></label>
+    <label>Year Max: <input type="number" name="year_max" value="{{ form.year_max or '' }}"></label>
+    <label>Query: <input type="text" name="query" value="{{ form.query }}"></label>
+    <label>Use Boost:
+      <select name="use_boost">
+        <option value="1" {% if form.use_boost=='1' %}selected{% endif %}>Yes</option>
+        <option value="0" {% if form.use_boost=='0' %}selected{% endif %}>No</option>
+      </select>
+    </label>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if results %}
+    <h2>Results ({{ results|length }})</h2>
+    {% for m in results %}
+      <div class="movie-card">
+        <div class="movie-title">{{ loop.index }}. {{ m.title }} ({{ m.year }})</div>
+        <div>Vote avg: {{ m.vote_average }} ({{ m.vote_count }} votes)</div>
+        <div>Reviews used: {{ m.review_count_used }}</div>
+        <div>Emotion score ({{ m.emotion }}): {{ m.emotion_score }}</div>
+        <div class="score-bar">
+          <div class="score-bar-fill" style="width: {{ m.emotion_score * 200 }}px;"></div>
+        </div>
+        <p>{{ m.overview }}</p>
+        <details>
+          <summary>All emotions avg</summary>
+          <pre>{{ m.emotions_avg | tojson(indent=2) }}</pre>
+        </details>
+      </div>
+    {% endfor %}
+  {% endif %}
+</body>
+</html>

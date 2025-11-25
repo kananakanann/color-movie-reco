@@ -1,0 +1,230 @@
+[
+    {
+        "color_code": "#ff0000",
+        "color_name": "red",
+        "top_emotions": [
+            "anger",
+            "fear"
+        ],
+        "probs": [
+            0.61,
+            0.189
+        ]
+    },
+    {
+        "color_code": "#ffff00",
+        "color_name": "yellow",
+        "top_emotions": [
+            "joy",
+            "surprise"
+        ],
+        "probs": [
+            0.662,
+            0.213
+        ]
+    },
+    {
+        "color_code": "#008000",
+        "color_name": "green",
+        "top_emotions": [
+            "joy",
+            "リラックス"
+        ],
+        "probs": [
+            0.434,
+            0.304
+        ]
+    },
+    {
+        "color_code": "#0000ff",
+        "color_name": "blue",
+        "top_emotions": [
+            "sadness"
+        ],
+        "probs": [
+            0.78
+        ]
+    },
+    {
+        "color_code": "#800080",
+        "color_name": "purple",
+        "top_emotions": [
+            "fear"
+        ],
+        "probs": [
+            0.522
+        ]
+    },
+    {
+        "color_code": "#ffc0cb",
+        "color_name": "pink",
+        "top_emotions": [
+            "love"
+        ],
+        "probs": [
+            0.837
+        ]
+    },
+    {
+        "color_code": "#000000",
+        "color_name": "black",
+        "top_emotions": [
+            "fear",
+            "anger"
+        ],
+        "probs": [
+            0.599,
+            0.233
+        ]
+    },
+    {
+        "color_code": "#ffffff",
+        "color_name": "white",
+        "top_emotions": [
+            "joy",
+            "fear"
+        ],
+        "probs": [
+            0.394,
+            0.244
+        ]
+    },
+    {
+        "color_code": "#a52a2a",
+        "color_name": "brown",
+        "top_emotions": [
+            "fear",
+            "anger"
+        ],
+        "probs": [
+            0.284,
+            0.209
+        ]
+    },
+    {
+        "color_code": "#dc143c",
+        "color_name": "crimson",
+        "top_emotions": [
+            "love"
+        ],
+        "probs": [
+            0.544
+        ]
+    },
+    {
+        "color_code": "#ffd700",
+        "color_name": "gold",
+        "top_emotions": [
+            "joy"
+        ],
+        "probs": [
+            0.677
+        ]
+    },
+    {
+        "color_code": "#808080",
+        "color_name": "gray",
+        "top_emotions": [
+            "fear",
+            "sadness"
+        ],
+        "probs": [
+            0.516,
+            0.304
+        ]
+    },
+    {
+        "color_code": "#adff2f",
+        "color_name": "yellowgreen",
+        "top_emotions": [
+            "joy",
+            "surprise"
+        ],
+        "probs": [
+            0.523,
+            0.279
+        ]
+    },
+    {
+        "color_code": "#fffff0",
+        "color_name": "ivory",
+        "top_emotions": [
+            "joy",
+            "love"
+        ],
+        "probs": [
+            0.446,
+            0.235
+        ]
+    },
+    {
+        "color_code": "#90ee90",
+        "color_name": "lightgreen",
+        "top_emotions": [
+            "joy",
+            "surprise"
+        ],
+        "probs": [
+            0.546,
+            0.167
+        ]
+    },
+    {
+        "color_code": "#ba55d3",
+        "color_name": "mediumorchid",
+        "top_emotions": [
+            "fear",
+            "sadness"
+        ],
+        "probs": [
+            0.406,
+            0.151
+        ]
+    },
+    {
+        "color_code": "#c71585",
+        "color_name": "mediumviolet",
+        "top_emotions": [
+            "love"
+        ],
+        "probs": [
+            0.743
+        ]
+    },
+    {
+        "color_code": "#000080",
+        "color_name": "navy",
+        "top_emotions": [
+            "sadness",
+            "fear"
+        ],
+        "probs": [
+            0.627,
+            0.198
+        ]
+    },
+    {
+        "color_code": "#ffa500",
+        "color_name": "orange",
+        "top_emotions": [
+            "joy",
+            "surprise"
+        ],
+        "probs": [
+            0.688,
+            0.211
+        ]
+    },
+    {
+        "color_code": "#87ceeb",
+        "color_name": "skyblue",
+        "top_emotions": [
+            "sadness",
+            "joy"
+        ],
+        "probs": [
+            0.535,
+            0.167
+        ]
+    }
+]
