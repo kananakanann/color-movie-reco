@@ -21,6 +21,13 @@ input[type="color"] { width: 150px; height: 60px; border: 1px solid #ddd; border
 .result-item { margin: 6px 0; }
 .error { color: #c00; margin-top: 10px; }
 
+.result-item strong {
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+}
+
 h1, h2 { font-size: 1.4em; }
 
 .description { font-size: 20px; }
