@@ -88,13 +88,19 @@ function rgbToHsl([r, g, b]) {
 
 // ピンク寄り判定
 function isPinkish(rgb) {
-  const [h, s, l] = rgbToHsl(rgb);
-  const isRed = (h >= 340 || h <= 20);
-  const isMagenta = (h >= 300 && h < 340);
-  const bright = l >= 0.65;
-  const vivid = s >= 0.20;
-  return (isRed || isMagenta) && bright && vivid;
+  const [h, s, l] = rgbToHsl(rgb); 
+  const isRed = (h >= 340 || h <= 20); 
+  const isMagenta = (h >= 300 && h < 340); 
+  const bright = l >= 0.65; const vivid = s >= 0.20; 
+  return (isRed || isMagenta) && bright && vivid; 
 }
+
+//黄色バイアス
+function isYellowish(rgb) {
+  const [h, s, l] = rgbToHsl(rgb);
+  return h >= 40 && h <= 70;
+}
+
 
 //ジャンル
 function genreIdsToNames(ids) {
@@ -295,6 +301,12 @@ addBtn.addEventListener("click", () => {
     }
   }
 
+  //黄色バイアス
+  if (isYellowish(rgb) && top1 && top1.label === "love") {
+    top1 = { label: "joy", pct: top1.pct ?? 60 };
+    top2 = { label: "love", pct:top2?.pct ?? 40}
+  }
+   
   selected.push({ hex, rgb, top1, top2 });
   render();
 });
