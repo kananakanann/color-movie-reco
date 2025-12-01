@@ -98,7 +98,8 @@ function isPinkish(rgb) {
 
 //ジャンル
 function genreIdsToNames(ids) {
-    return ids.map(id => GENRE_MAP[id] || "Unknown");
+  if (!Array.isArray(ids)) return [];
+  return ids.map(id => GENRE_MAP[id] || "Unknown");
 }
 
 
