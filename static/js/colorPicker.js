@@ -9,12 +9,14 @@ const colorInput = document.getElementById("color-input");
 const addBtn = document.getElementById("add-color-btn");
 const clearBtn = document.getElementById("clear-btn");
 const recBtn = document.getElementById("recommend-btn");
+const showEmoBtn  = document.getElementById("show-emotion-btn");
 const chips = document.getElementById("chips");
-const preview = document.getElementById("preview");
+//const preview = document.getElementById("preview");
 const results = document.getElementById("results");
 const errorBox = document.getElementById("error");
 const count = document.getElementById("count");
 const inferredEl = document.getElementById("inferred-emotion");
+const inferredRow = document.getElementById("inferred-row");
 
 const GENRE_MAP = {
     28: "アクション",
@@ -196,13 +198,14 @@ function render() {
       <span class="swatch" style="background:${c.hex}"></span>
       <div class="chip-text">
         <div>${c.hex.toUpperCase()} ( ${c.rgb.join(",")} )</div>
-        <div class="emotion-label">→ ${top1}${top2 ? `, ${top2}` : ""}</div>
+        <!--<div class="emotion-label">→ ${top1}${top2 ? `, ${top2}` : ""}</div>-->
       </div>
       <button class="remove" aria-label="削除" data-index="${i}">×</button>
     `;
     chips.appendChild(el);
   });
 
+/*
   if (selected.length > 0) {
     const stops = selected.map((c, i) => `${c.hex} ${Math.round((i / Math.max(1, selected.length - 1)) * 100)}%`);
     preview.style.background = `linear-gradient(90deg, ${stops.join(",")})`;
@@ -211,13 +214,24 @@ function render() {
     preview.style.background = "none";
     preview.textContent = "（ここにグラデーションプレビュー）";
   }
+  */
 
   count.textContent = selected.length;
   addBtn.disabled = selected.length >= 1;
 
+ // 推定感情（ボタンの活性/非活性だけ管理） 
   const emos = calcDominantEmotions(selected, 2);
-  inferredEl.textContent = emos.length ? emos.join(", ") : "-";
+  const hasEmos = emos.length > 0;
+
+  // 映画検索ボタン・推定感情ボタンの有効/無効
   recBtn.disabled = emos.length === 0;
+  showEmoBtn.disabled = !hasEmos;
+
+  // 色がなくなった / 感情推定できない時は表示も消す
+  if (!hasEmos) {
+    inferredRow.style.display = "none";
+    inferredEl.textContent = "";
+  }
 }
 
 
@@ -296,10 +310,12 @@ clearBtn.addEventListener("click", () => {
   selected = [];
   results.innerHTML = "";
   errorBox.textContent = "";
+  inferredRow.style.display = "none";
+  inferredEl.textContent = "";
   render();
 });
 
-// 映画レコメンド：上位2感情それぞれに対して一覧を出す & ログ送信
+// 映画レコメンド：推定感情2つの結果を合算して上位10件だけ表示 & ログ送信
 recBtn.addEventListener("click", async () => {
   const emos = calcDominantEmotions(selected, 2);
   if (emos.length === 0) return;
@@ -309,24 +325,17 @@ recBtn.addEventListener("click", async () => {
 
   try {
     results.innerHTML = ""; // いったんクリア
-    const recommendResults = {};  // emotion → 映画リスト
 
+    const recommendResultsPerEmotion = {};   // emotion → 映画リスト（ログ用）
+    const combinedMap = new Map();          // movie.id → 映画オブジェクト（ベストスコアを保持）
+
+    // それぞれの感情について API 叩く
     for (const emo of emos) {
-      // 各感情ごとのブロックを作成
-      const block = document.createElement("section");
-      block.className = "result-block";
-      block.innerHTML = `
-        <h3>${emo} に基づくおすすめ</h3>
-        <ol class="result-list"></ol>
-      `;
-      results.appendChild(block);
-      const listEl = block.querySelector("ol");
-
       const payload = {
         emotion: emo,
         topk: 10,
         min_review_count: 5,
-        use_boost: true
+        use_boost: true,
       };
 
       const res = await fetch("/api/recommend_by_emotion_from_color", {
@@ -340,38 +349,90 @@ recBtn.addEventListener("click", async () => {
       }
 
       const list = data.results || [];
-      recommendResults[emo] = list;   // ログ用に保存
+      recommendResultsPerEmotion[emo] = list; // ログ用に保存
 
-      if (list.length === 0) {
-        const li = document.createElement("li");
-        li.textContent = "候補が見つかりませんでした。";
-        listEl.appendChild(li);
-        continue;
-      }
+      // 合算用マップに詰める（同じ映画が複数感情に出たら、emotion_score が高いほうを採用）
+      list.forEach((m) => {
+        const existing = combinedMap.get(m.id);
+        const newScore = m.emotion_score ?? 0;
+        const oldScore = existing?.emotion_score ?? -Infinity;
 
-      list.forEach((m, idx) => {
+        if (!existing || newScore > oldScore) {
+          combinedMap.set(m.id, m);
+        }
+      });
+    }
+
+    // Map → 配列に変換して、emotion_score でソート
+    const combinedList = Array.from(combinedMap.values()).sort(
+      (a, b) => (b.emotion_score ?? 0) - (a.emotion_score ?? 0)
+    );
+
+    // 上位10件だけ取る
+    const top10 = combinedList.slice(0, 10);
+
+    // 画面表示：1つのブロックにまとめて表示
+    const block = document.createElement("section");
+    block.className = "result-block";
+    block.innerHTML = `
+      
+      <ol class="result-list"></ol>
+    `;
+    results.appendChild(block);
+    const listEl = block.querySelector("ol");
+
+    if (top10.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "候補が見つかりませんでした。";
+      listEl.appendChild(li);
+    } else {
+      top10.forEach((m, idx) => {
         const li = document.createElement("li");
-        const genreNames = genreIdsToNames(m.genre_ids || []);
+
+        // ジャンル名
+        let genreNames = [];
+        if (Array.isArray(m.genre_ids)) {
+          genreNames = genreIdsToNames(m.genre_ids);
+        } else if (Array.isArray(m.genres)) {
+          genreNames = m.genres;
+        }
+
         li.className = "result-item";
         li.innerHTML = `
           <div><strong>${idx + 1}. ${m.title} (${m.year || "?"})</strong></div>
-          
+          <!--<div>emotion score (${m.emotion}): ${m.emotion_score}</div>-->
           <div>vote avg: ${m.vote_average}/10  (${m.vote_count} votes)</div>
-          <p><b>ジャンル：</b> ${genreNames.join(", ")}</p>
-          <p><b>あらすじ：</b><p>${m.overview || ""}</p>
+          <p><b>ジャンル:</b> ${genreNames.join(", ")}</p>
+          <p><b>あらすじ：</b></p>
+          <p>${m.overview || ""}</p>
         `;
         listEl.appendChild(li);
       });
     }
 
-    // すべての感情の推薦が終わったら、1回だけログ送信
-    await logColorExperiment(emos, recommendResults);
+    // ログには「感情別のリスト」と「合算Top10」の両方入れておくと分析しやすい
+    const recommendResultsForLog = {
+      per_emotion: recommendResultsPerEmotion,
+      combined_top10: top10,
+    };
+    await logColorExperiment(emos, recommendResultsForLog);
 
   } catch (err) {
+    console.error(err);
     results.innerHTML = "";
     errorBox.textContent = `エラー: ${err.message}`;
   }
 });
+
+// 推定感情を表示ボタン
+showEmoBtn.addEventListener("click", () => {
+  const emos = calcDominantEmotions(selected, 2);
+  if (!emos.length) return;
+
+  inferredEl.textContent = emos.join(", ");
+  inferredRow.style.display = "block";
+});
+
 
 // ---------- 初期処理 ----------
 render();
