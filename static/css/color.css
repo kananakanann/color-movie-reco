@@ -11,10 +11,11 @@ input[type="color"] { width: 150px; height: 60px; border: 1px solid #ddd; border
 .btn-ghost { background: transparent; }
 .hint { color: #666; }
 
-.chips { display: flex; flex-wrap: wrap; gap: var(--gap); margin: 10px 0 16px; }
-.chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid #ddd; background: #fff; }
-.swatch { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #ccc; }
-.remove { border: none; background: transparent; cursor: pointer; font-size: 16px; line-height: 1; }
+.chips {
+  display: flex; flex-wrap: wrap; gap: var(--gap); margin: 10px 0 16px;}
+.chip {display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px; border-radius: 20px; border: 1px solid #ddd; background: #fff; font-size: 17px; }
+.swatch {width: 24px; height: 24px; border-radius: 50%; border: 1px solid #ccc; }
+.remove {border: none; background: transparent; cursor: pointer; font-size: 25px; line-height: 1; }
 
 .preview { height: 56px; border-radius: var(--radius); border: 1px dashed #bbb; display: grid; place-items: center; color: #666; }
 .results { padding-left: 20px; }
