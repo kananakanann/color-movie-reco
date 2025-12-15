@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>色から映画をおすすめ</title>
+  <title>色から映画を探す</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/color.css') }}">
 </head>
 <body>
@@ -12,6 +12,24 @@
   </header>
 
   <main class="wrap">
+    <h2>卒業研究実験のご協力のお願い</h2>
+    <p>映画推薦システムについての研究を行っています。以下の手順に従ってシステムを操作していただいた後、アンケートへのご回答をお願いいたします。</p>
+    <ol>
+      <li>なりたい感情に合った色を選択してください
+        <br>（事後アンケートで使用しますので控えていただけると幸いです）</li>
+      <li>“映画を検索”ボタンを押してください</li>
+      <li>おすすめの映画が10作品表示されます</li>
+      <li>表示された作品の中から気になったものを1つ選んでください</li>
+      <li>4で選んだ作品について、あらすじを読む/映画ポスターを見る/予告編を視聴/本編を視聴 のいずれかを行う</li>
+      <li>“推定感情を表示”のボタンを押してください
+        <br>（表示された感情は、事後アンケートで使用しますので控えていただけると幸いです）</li>
+      <li>以下のリンクからアンケートのご回答をお願いいたします
+        <br><a href="https://forms.gle/hsd4zWtdQayTSZkCA" target="_blank" rel="noopener noreferrer">
+    アンケートはこちら
+  </a>
+      </li>
+    </ol>
+    
     <p class="description">なりたい感情に合った色を選択してください。</p>
     <section class="row">
       <input id="color-input" type="color" value="#ff6b6b" aria-label="色を選択">
@@ -40,7 +58,7 @@
     </section>
 
     <section>
-      <h2>結果</h2>
+      <h2>おすすめ映画</h2>
       <div id="results" class="results"></div>
       <div id="error" class="error"></div>
     </section>

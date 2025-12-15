@@ -103,6 +103,7 @@ def create_app():
         return render_template("colors.html")
 
     # ---------- 色→推定感情→映画レコメンド（JSON） ----------
+    #　ここいらない？？ 消したらダメだった
     @app.post("/api/recommend_by_emotion_from_color")
     def api_recommend_by_emotion_from_color():
         """
@@ -142,13 +143,14 @@ def create_app():
 
         return jsonify({"results": recs})
 
+        
     # ---------- 色実験ログ保存用API ----------
     @app.post("/api/log_color_experiment")
     def log_color_experiment():
         """
         実験用ログ保存API。
 
-        期待するJSON例：
+        JSON例：
         {
           "selected_colors": ["#ff6699", "#ffff00"],
           "inferred_emotions": ["love", "joy"],
@@ -185,12 +187,11 @@ def create_app():
     def health():
         return {"status": "ok"}
 
-    # ---------- ログ確認用（安全な簡易ビュー） ----------
+    # ---------- ログ確認用 ----------
     @app.get("/admin/logs")
     def view_logs():
         """
         実験ログをブラウザで確認する簡易ビュー。
-        ※実験終了後は消すかパスワード保護推奨
         """
         if not os.path.exists(LOG_FILE):
             return "ログファイルがまだありません。", 404
