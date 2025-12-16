@@ -438,8 +438,11 @@ recBtn.addEventListener("click", async () => {
           <div>vote avg: ${m.vote_average}/10  (${m.vote_count} votes)</div>
           <p><b>${jpRatingText}</b></p>
           <p><b>ジャンル:</b> ${genreNames.join(", ")}</p>
-          <p><b>あらすじ：</b></p>
-          <p>${m.overview || ""}</p>
+
+          <details class="overview-details">
+            <summary class="overview-summary">あらすじを見る</summary>
+            <p class="overview-text">${m.overview || ""}</p>
+          </details>
         `;
         listEl.appendChild(li);
       });

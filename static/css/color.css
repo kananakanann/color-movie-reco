@@ -72,3 +72,27 @@ input[type="color"] { width: 150px; height: 60px; border: 1px solid #ddd; border
   padding-left: 0;
   margin: 0;
 }
+
+.overview-details {
+  margin-top: 8px;
+}
+
+.overview-summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.overview-text {
+  margin-top: 6px;
+  white-space: pre-wrap; 
+}
+
+.result-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e5e5; /* 薄いグレーの横線 */
+}
+
+/* 最後の映画だけ線を消す*/
+.result-item:last-child {
+  border-bottom: none;
+}
