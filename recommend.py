@@ -10,7 +10,8 @@ import heapq
 
 # ====== 入出力パス ======
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-ENRICHED_PATH = os.path.join(DATA_DIR, "movies_with_emotions.json")  
+ENRICHED_PATH = os.path.join(DATA_DIR, "movies_with_emotions.json")
+MOVIES_PATH = os.path.join(DATA_DIR, "movies_data.json") 
 
 ALLOWED_EMOTIONS = {"joy", "sadness", "anger", "fear", "love", "surprise"}
 
@@ -80,6 +81,26 @@ def _confidence_boost(review_count: int, cap: float = 0.2, ref: int = 100) -> fl
     val = math.log1p(review_count) / math.log1p(ref)
     return max(0.0, min(cap, val * cap))
 
+def load_certification_map() -> Dict[str, Dict]:
+    """movie_id -> certification情報 の辞書を作る"""
+    if not os.path.exists(MOVIES_PATH):
+        return {}
+    with open(MOVIES_PATH, "r", encoding="utf-8") as f:
+        movies = json.load(f)
+
+    cert_map = {}
+    for m in movies:
+        mid = m.get("id")
+        if mid is None:
+            continue
+        cert_map[str(mid)] = {
+            "jp_certification": m.get("jp_certification"),
+            "us_certification": m.get("us_certification"),
+            "display_certification": m.get("display_certification"),
+        }
+    return cert_map
+
+
 def load_movies() -> List[Dict]:
     if not os.path.exists(ENRICHED_PATH):
         raise FileNotFoundError(f"Not found: {ENRICHED_PATH}. Run Step 2 to create it.")
@@ -105,6 +126,7 @@ def recommend_by_emotion(
         )
 
     movies = load_movies()
+    cert_map = load_certification_map()
 
     # ---- 基本フィルタ ----
     cands: List[Dict] = []
@@ -177,6 +199,10 @@ def recommend_by_emotion(
             "emotions_avg": m.get("emotions_avg"),  # 全感情プロファイル
             "overview": m.get("overview"),
             "genre_ids": m.get("genre_ids", []),
+
+            "jp_certification": cert_map.get(str(m.get("id")), {}).get("jp_certification"),
+            "us_certification": cert_map.get(str(m.get("id")), {}).get("us_certification"),
+            "display_certification": cert_map.get(str(m.get("id")), {}).get("display_certification"),
         })
     return out
 

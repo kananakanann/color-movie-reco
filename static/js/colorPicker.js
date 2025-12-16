@@ -108,6 +108,25 @@ function genreIdsToNames(ids) {
   return ids.map(id => GENRE_MAP[id] || "Unknown");
 }
 
+// ---------- 年齢制限（日本基準） ----------
+function formatJpRating(m) {
+  // JPだけを見る
+  const jp = (m.jp_certification || "").trim();
+
+  // nullの場合
+  if (!jp) return "年齢制限: なし";
+
+  // 日本の想定ラベル：G / PG12 / R15+ / R18+
+  if (jp === "G") return "年齢制限: なし（G）";
+  if (jp === "PG12") return "年齢制限: PG12";
+  if (jp === "R15+") return "年齢制限: R15+";
+  if (jp === "R18+") return "年齢制限: R18+";
+
+  // 想定外の表記が来たときも、そのまま表示しておく（安全）
+  return `年齢制限: ${jp}`;
+}
+
+
 
 // ---------- color_top2.json -> palette ----------
 function normalizeColorMapFromArray(arr) {
@@ -410,11 +429,14 @@ recBtn.addEventListener("click", async () => {
           genreNames = m.genres;
         }
 
+        const jpRatingText = formatJpRating(m);
+
         li.className = "result-item";
         li.innerHTML = `
           <div><strong>${idx + 1}. ${m.title} (${m.year || "?"})</strong></div>
           <!--<div>emotion score (${m.emotion}): ${m.emotion_score}</div>-->
           <div>vote avg: ${m.vote_average}/10  (${m.vote_count} votes)</div>
+          <p><b>${jpRatingText}</b></p>
           <p><b>ジャンル:</b> ${genreNames.join(", ")}</p>
           <p><b>あらすじ：</b></p>
           <p>${m.overview || ""}</p>
